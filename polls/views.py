@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
+
 from .models import Question, Choice
 from django.shortcuts import render, get_object_or_404
 
@@ -10,11 +11,11 @@ from django.shortcuts import render, get_object_or_404
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
+    paginate_by = 3
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        filtered_objects = Question.objects.filter(pub_date__lte=timezone.now())
-        return filtered_objects.order_by('-pub_date')[:5]
+        return Question.objects.exclude(choice__choice_text__isnull=True).filter(
+                                        pub_date__lte=timezone.now()).order_by('-pub_date')
 
 
 class DetailView(generic.DetailView):
@@ -47,13 +48,6 @@ def vote(request, question_id):
         selected_choice.votes += 1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
-
-
-
-
-
-
-
 
 #  ---------------------------------------------------------------------------------------------------------------------
 
