@@ -1,5 +1,7 @@
 body {
-    background: white url("images/bricks.jpg") no-repeat right bottom;
+  background: url("images/kuku.jpg");
+  background-repeat: no-repeat;
+  background-size: auto;
 }
 
 li a {
